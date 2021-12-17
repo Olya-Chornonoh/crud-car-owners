@@ -1,0 +1,20 @@
+<div class="container">
+  <h4>Владельцы автомобилей</h4>
+  <div class="container-buttons d-flex">
+    <button class="btn btn-primary add-new-owner" (click)="addNewOwner()">Добавить</button>
+    <div class="btn-group">
+      <button class="btn btn-light viewing">Просмотр</button>
+      <button class="btn btn-light update">Редактировать</button>
+      <button class="btn btn-light delete">Удалить</button>
+    </div>
+  </div>
+  <table class="table-bordered">
+    <tr>
+      <th>Фамилия</th>
+      <th>Имя</th>
+      <th>Отчество</th>
+      <th>Количество автомобилей</th>
+    </tr>
+    <tr ngFor></tr>
+  </table>
+</div>
