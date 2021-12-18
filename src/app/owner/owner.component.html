@@ -1,11 +1,26 @@
 <div class="container">
   <div class="owner">
     <p>Фамилия</p>
-    <input id="lastName" type="text" class="form-control" [formControl]="lastName">
+    <div>
+      <input id="lastName" type="text" class="form-control" [formControl]="lastName">
+      <div *ngIf="lastName.invalid && (lastName.touched || lastName.dirty)">
+        <span class="text-danger" *ngIf="lastName.errors?.required">Обязательное поле</span>
+      </div>
+    </div>
     <p>Имя</p>
-    <input id="firstName" type="text" class="form-control" [formControl]="firstName">
+    <div>
+      <input id="firstName" type="text" class="form-control" [formControl]="firstName">
+      <div *ngIf="firstName.invalid && (firstName.touched || firstName.dirty)">
+        <span class="text-danger" *ngIf="firstName.errors?.required">Обязательное поле</span>
+      </div>
+    </div>
     <p>Отчество</p>
-    <input id="middleName" type="text" class="form-control" [formControl]="middleName">
+    <div>
+      <input id="middleName" type="text" class="form-control" [formControl]="middleName">
+      <div *ngIf="middleName.invalid && (middleName.touched || middleName.dirty)">
+        <span class="text-danger" *ngIf="middleName.errors?.required">Обязательное поле</span>
+      </div>
+    </div>
   </div>
   <div class="cars">
     <div class="head">
@@ -17,10 +32,34 @@
     </div>
     <div class="info" *ngFor="let car of cars.controls; let i=index">
       <ng-container [formGroup]="car">
-        <input type="text" class="form-control" formControlName="carNumber" />
-        <input type="text" class="form-control" formControlName="brand" />
-        <input type="text" class="form-control" formControlName="model" />
-        <input type="text" class="form-control" formControlName="year" />
+        <div>
+          <input type="text" class="form-control" formControlName="carNumber" />
+          <div *ngIf="car.get('carNumber').invalid && (car.get('carNumber').touched || car.get('carNumber').dirty)">
+            <span class="text-danger" *ngIf="car.get('carNumber').errors?.required">Обязательное поле</span>
+            <span class="text-danger" *ngIf="car.get('carNumber').errors?.pattern">Неправильный номер</span>
+            <span class="text-danger" *ngIf="car.get('carNumber').errors?.carNumber">Такой номер уже привязан</span>
+          </div>
+        </div>
+        <div>
+          <input type="text" class="form-control" formControlName="brand" />
+          <div *ngIf="car.get('brand').invalid && (car.get('brand').touched || car.get('brand').dirty)">
+            <span class="text-danger" *ngIf="car.get('brand').errors?.required">Обязательное поле</span>
+          </div>
+        </div>
+        <div>
+          <input type="text" class="form-control" formControlName="model" />
+          <div *ngIf="car.get('model').invalid && (car.get('model').touched || car.get('model').dirty)">
+            <span class="text-danger" *ngIf="car.get('model').errors?.required">Обязательное поле</span>
+          </div>
+        </div>
+        <div>
+          <input type="number" class="form-control" formControlName="year" />
+          <div *ngIf="car.get('year').invalid && (car.get('year').touched || car.get('year').dirty)">
+            <span class="text-danger" *ngIf="car.get('year').errors?.required">Обязательное поле</span>
+            <span class="text-danger" *ngIf="car.get('year').errors?.min">Год должен быть больше 1990</span>
+            <span class="text-danger" *ngIf="car.get('year').errors?.max">Такой год еще не наступил</span>
+          </div>
+        </div>
         <button class="btn btn-danger" (click)="deleteCar(i)"><i class="bi bi-trash"></i></button>
       </ng-container>
     </div>
@@ -30,7 +69,8 @@
       <i class="bi bi-plus"></i>
       Добавить автомобиль
     </button>
-    <button class="btn btn-info" (click)="addNewOwner()">
+    <button class="btn btn-info" (click)="addNewOwner()"
+      [disabled]="lastName.invalid || firstName.invalid || middleName.invalid || cars.invalid">
       <i class="bi bi-save"></i>
       Сохранить
     </button>

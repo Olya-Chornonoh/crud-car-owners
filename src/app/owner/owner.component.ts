@@ -1,8 +1,9 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CarOwnersService } from '../services/car-owners.service';
+import { carNumberValidator } from '../validators/car-number.validator';
 
 @Component({
   selector: 'app-owner',
@@ -11,10 +12,10 @@ import { CarOwnersService } from '../services/car-owners.service';
 })
 export class OwnerComponent implements OnInit {
 
-  firstName = new FormControl('');
-  lastName = new FormControl('');
-  middleName = new FormControl('');
-  cars = new FormArray([]);
+  firstName = new FormControl('', [Validators.required]);
+  lastName = new FormControl('', [Validators.required]);
+  middleName = new FormControl('', [Validators.required]);
+  cars = new FormArray([], [Validators.required]);
   id?: number;
 
   constructor(private carsOwner: CarOwnersService,
@@ -35,10 +36,17 @@ export class OwnerComponent implements OnInit {
               for (let i = 0; i < value.cars.length; i++) {
                 this.cars.push(new FormGroup(
                   {
-                    carNumber: new FormControl(value.cars[i].carNumber),
-                    brand: new FormControl(value.cars[i].brand),
-                    model: new FormControl(value.cars[i].model),
-                    year: new FormControl(value.cars[i].year),
+                    carNumber: new FormControl(value.cars[i].carNumber, [
+                      Validators.required,
+                      Validators.pattern(/[A-Z]{2}[0-9]{4}[A-Z]{2}/),
+                    ], [carNumberValidator.bind(this.carsOwner)]),
+                    brand: new FormControl(value.cars[i].brand, [Validators.required]),
+                    model: new FormControl(value.cars[i].model, [Validators.required]),
+                    year: new FormControl(value.cars[i].year, [
+                      Validators.required,
+                      Validators.min(1990),
+                      Validators.max(new Date().getFullYear())
+                    ]),
                   }
                 ));
               }
@@ -57,7 +65,7 @@ export class OwnerComponent implements OnInit {
   }
 
   addNewOwner() {
-    if (this.id !== undefined) {      
+    if (this.id !== undefined) {
       this.carsOwner.editOwner({
         id: this.id,
         firstName: this.firstName.value,
@@ -85,10 +93,17 @@ export class OwnerComponent implements OnInit {
     this.cars.push(
       new FormGroup(
         {
-          carNumber: new FormControl(''),
-          brand: new FormControl(''),
-          model: new FormControl(''),
-          year: new FormControl(''),
+          carNumber: new FormControl('', [
+            Validators.required,
+            Validators.pattern(/[A-Z]{2}[0-9]{4}[A-Z]{2}/)
+          ], [carNumberValidator.bind(this.carsOwner)]),
+          brand: new FormControl('', [Validators.required]),
+          model: new FormControl('', [Validators.required]),
+          year: new FormControl('', [
+            Validators.required,
+            Validators.min(1990),
+            Validators.max(new Date().getFullYear())
+          ]),
         }
       ));
   }
