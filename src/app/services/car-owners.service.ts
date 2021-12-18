@@ -39,7 +39,7 @@ export class CarOwnersService implements ICarOwnersService {
     });
   }
   editOwner(aOwner: OwnerEntity): Observable<OwnerEntity> {
-    return this.http.put<OwnerEntity>(`/api/owners/${aOwner.id}`, aOwner);
+    return this.http.post<OwnerEntity>(`/api/owners/${aOwner.id}`, aOwner);
   }
   deleteOwner(aOwnerId: number): Observable<OwnerEntity> {
     return this.http.delete<OwnerEntity>(`/api/owners/${aOwnerId}`);

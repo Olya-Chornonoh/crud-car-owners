@@ -1,11 +1,23 @@
 <div class="container">
   <h4>Владельцы автомобилей</h4>
   <div class="container-buttons d-flex">
-    <button class="btn btn-primary add-new-owner" (click)="addNewOwner()">Добавить</button>
+    <button class="btn btn-primary add-new-owner" (click)="addNewOwner()">
+      <i class="bi bi-plus"></i>
+      Добавить
+    </button>
     <div class="btn-group">
-      <button class="btn btn-light viewing">Просмотр</button>
-      <button class="btn btn-light update">Редактировать</button>
-      <button class="btn btn-light delete">Удалить</button>
+      <button class="btn btn-light viewing" (click)="viewOwner()">
+        <i class="bi bi-eye"></i>
+        Просмотр
+      </button>
+      <button class="btn btn-light update" (click)="editOwner()">
+        <i class="bi bi-pencil-square"></i>
+        Редактировать
+      </button>
+      <button class="btn btn-light delete" (click)="deleteOwner()">
+        <i class="bi bi-trash"></i>
+        Удалить
+      </button>
     </div>
   </div>
   <table class="table-bordered">
@@ -15,6 +27,12 @@
       <th>Отчество</th>
       <th>Количество автомобилей</th>
     </tr>
-    <tr ngFor></tr>
+    <tr *ngFor="let owner of owners; let i=index" (click)="selectedIndex=i"
+      [ngClass]="{'active': selectedIndex === i}">
+      <td>{{ owner.lastName }}</td>
+      <td>{{ owner.firstName }}</td>
+      <td>{{ owner.middleName }}</td>
+      <td>{{ owner.cars.length }}</td>
+    </tr>
   </table>
 </div>

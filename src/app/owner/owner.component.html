@@ -1,1 +1,42 @@
-<p>owner works!</p>
+<div class="container">
+  <div class="owner">
+    <p>Фамилия</p>
+    <input id="lastName" type="text" class="form-control" [formControl]="lastName">
+    <p>Имя</p>
+    <input id="firstName" type="text" class="form-control" [formControl]="firstName">
+    <p>Отчество</p>
+    <input id="middleName" type="text" class="form-control" [formControl]="middleName">
+  </div>
+  <div class="cars">
+    <div class="head">
+      <p>Номер</p>
+      <p>Марка</p>
+      <p>Модель</p>
+      <p>Год</p>
+      <p></p>
+    </div>
+    <div class="info" *ngFor="let car of cars.controls; let i=index">
+      <ng-container [formGroup]="car">
+        <input type="text" class="form-control" formControlName="carNumber" />
+        <input type="text" class="form-control" formControlName="brand" />
+        <input type="text" class="form-control" formControlName="model" />
+        <input type="text" class="form-control" formControlName="year" />
+        <button class="btn btn-danger" (click)="deleteCar(i)"><i class="bi bi-trash"></i></button>
+      </ng-container>
+    </div>
+  </div>
+  <div class="btn-group">
+    <button class="btn btn-primary" (click)="addNewCar()">
+      <i class="bi bi-plus"></i>
+      Добавить автомобиль
+    </button>
+    <button class="btn btn-info" (click)="addNewOwner()">
+      <i class="bi bi-save"></i>
+      Сохранить
+    </button>
+    <button class="btn btn-secondary" (click)="back()">
+      <i class="bi bi-arrow-left-circle"></i>
+      Назад
+    </button>
+  </div>
+</div>
